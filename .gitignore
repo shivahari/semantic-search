@@ -160,7 +160,11 @@ cython_debug/
 #.idea/
 
 # Faiss index
-faiss_indexed_tech_names
+*.index
 
 # Pickle file
 *.pickle
+
+# XML file
+*.xml
+
