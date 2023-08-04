@@ -1,7 +1,7 @@
 # A semantic search app #
 A semantic search app using Faiss
 
-## Setup environment ##
+## Setup environment: ##
 1. Create a `venv`
 2. Run `python -m pip install -r requirements.txt`
 
