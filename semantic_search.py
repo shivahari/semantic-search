@@ -1,6 +1,6 @@
 # reference https://deepnote.com/blog/semantic-search-using-faiss-and-mpnet
 import faiss
-import pandas as pd
+from pathlib import Path
 import pickle 
 import torch
 from transformers import AutoTokenizer, AutoModel
@@ -108,15 +108,18 @@ if __name__ == '__main__':
     faiss_obj = FaissIdx()
     index = faiss_obj.create_index()
     doc_map = dict()
-    faiss_obj.add_doc_from_xml(xml_local_file='Tags.xml',
-                               html_element_property='TagName',
-                               index=index,
-                               doc_map=doc_map)
-    faiss_obj.save_index_and_pickle(index=index,
-                                    index_name='Tags.index',
-                                    doc_map=doc_map,
-                                    pickle_name='Tags.pickle')
-    
+
+    if not Path('Tags.index').is_file():
+        faiss_obj.add_doc_from_xml(xml_local_file='Tags.xml',
+                                   html_element_property='TagName',
+                                   index=index,
+                                   doc_map=doc_map)
+    if not Path('Tags.pickle').is_file():
+        faiss_obj.save_index_and_pickle(index=index,
+                                        index_name='Tags.index',
+                                        doc_map=doc_map,
+                                        pickle_name='Tags.pickle')
+
     local_index = faiss_obj.get_index(index_name='Tags.index')
     local_doc_map = faiss_obj.get_pickle(pickle_name='Tags.pickle')
 
@@ -129,5 +132,6 @@ if __name__ == '__main__':
             continue
         output = faiss_obj.search_doc(query=tech,
                                       index=local_index,
-                                      doc_map=doc_map)
+                                      doc_map=local_doc_map,
+                                      k=10)
         print(output)
