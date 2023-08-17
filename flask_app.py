@@ -7,11 +7,11 @@ app = Flask(__name__)
 BASE_URL = os.environ.get('SEM_SEARCH_APP', 'http://localhost:8000/sem-search/')
 
 @app.route("/")
-def index():
+def index() -> render_template:
     return render_template("index.html")
 
 @app.route("/search/<box>")
-def sem_search(box):
+def sem_search(box) -> jsonify:
     query = request.args.get('query')
     url = BASE_URL + query
 
